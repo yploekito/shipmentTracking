@@ -25,11 +25,12 @@ router.post('/register', (req, res) => {
     })
 })
 
+
 router.get('/statusreport', (req, res) => {
     res.render('../views/statusReport.ejs');
 })
 
-router.get('/history/:userId', (req, res) => {
+router.get('/history', (req, res) => {
     res.render('../views/history.ejs');
 })
 
@@ -37,17 +38,21 @@ router.get('/login', (req, res) => {
     res.render('../views/login.ejs');
 })
 
+router.post('/cancel', (req, res) => {
+    res.redirect('/');
+})
+
 router.post('/login', (req,res)=>{
     let inputUsername = req.body.username
     let inputPassword = req.body.password
     User.findOne({where:{userName:inputUsername, passWord:inputPassword}})
     .then((oneUser)=>{
-        // console.log(oneUser)
-        res.redirect(`/history/${oneUser.id}`)
+        if(oneUser){
+            res.redirect(`/history/${oneUser.id}`)
+        } else {
+            res.redirect('/login?errMsg= Username or Password is incorrect')
+        }
     })
-    // .catch((err)=>{
-    //     res.send(err)
-    // })
 })
 
 module.exports = router;
