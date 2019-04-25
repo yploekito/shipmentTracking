@@ -49,11 +49,19 @@ router.get('/statusreport/:AWBId', (req, res) => {
 })
 
 router.get('/history/:userId', (req, res) => {
-    User.findOne({where: {id: req.params.userId}})
+    User.findOne({
+        where: {
+            id: req.params.userId
+        },
+        include: [
+            {model: AWB}
+        ]
+    })
     .then( (oneUser) => {
         res.render('../views/history.ejs', {
             oneUser: oneUser
         });
+        // res.send(oneUser);
     })
     .catch( (err) => {
         res.send(err);
