@@ -15,7 +15,7 @@ router.post('/register', (req, res) => {
     let userName = req.body.userName;
     let passWord = req.body.passWord;
     let role = "user";
-    model.User.create({firstName: firstName, lastName: lastName, userName: userName, passWord: passWord, role: role})
+    User.create({firstName: firstName, lastName: lastName, userName: userName, passWord: passWord, role: role})
     .then( (user) => {
         console.log(user);
         res.redirect(`/history/${user.id}`)
