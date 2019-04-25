@@ -20,6 +20,9 @@
                 </div>
                 <button type="submit">login</button>
             </form>
-        </div>
+            <% if(error){ %>
+                <div style='margin-top:15px; font-size: small'><%= error %></div>
+            <% } %>
+    </div>
 </body>
 </html>

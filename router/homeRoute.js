@@ -34,7 +34,7 @@ router.get('/history/:userId', (req, res) => {
 })
 
 router.get('/login', (req, res) => {
-    res.render('../views/login.ejs');
+    res.render('../views/login.ejs', {error: req.query.errMsg});
 })
 
 router.post('/login', (req,res)=>{
@@ -42,12 +42,15 @@ router.post('/login', (req,res)=>{
     let inputPassword = req.body.password
     User.findOne({where:{userName:inputUsername, passWord:inputPassword}})
     .then((oneUser)=>{
-        // console.log(oneUser)
-        res.redirect(`/history/${oneUser.id}`)
+        if(oneUser){
+            res.redirect(`/history/${oneUser.id}`)
+        }else{
+            res.redirect('/login?errMsg= Username or Password is incorrect')
+        }
     })
-    // .catch((err)=>{
-    //     res.send(err)
-    // })
+    .catch((err)=>{
+        res.send(err)
+    })
 })
 
 module.exports = router;
