@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Model = require('../models');
 const User = Model.User
+const AWB = Model.AWB
 router.get('/', (req, res) => {
     res.render('../views/home.ejs');
 })
@@ -26,16 +27,24 @@ router.post('/register', (req, res) => {
 })
 
 
-router.get('/statusreport', (req, res) => {
+router.get('/statusreport/:awbId', (req, res) => {
     res.render('../views/statusReport.ejs');
 })
 
 router.get('/history/:userId', (req, res) => {
-    User.findOne({where: {id: req.params.userId}})
+    User.findOne({
+        where: {
+            id: req.params.userId
+        },
+        include: [
+            {model: AWB}
+        ]
+    })
     .then( (oneUser) => {
         res.render('../views/history.ejs', {
             oneUser: oneUser
         });
+        // res.send(oneUser);
     })
     .catch( (err) => {
         res.send(err);
@@ -52,7 +61,9 @@ router.post('/login', (req,res)=>{
     User.findOne({where:{userName:inputUsername, passWord:inputPassword}})
     .then((oneUser)=>{
         if(oneUser){
-            res.redirect(`/history/${oneUser.id}`)
+            res.redirect(`/history/${oneUser.id}`, {
+                oneUser: oneUser
+            })
         }else{
             res.redirect('/login?errMsg= Username or Password is incorrect')
         }

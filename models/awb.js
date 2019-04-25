@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   AWB.associate = function(models) {
     // associations can be defined here
+    AWB.belongsTo(models.User)
   };
   return AWB;
 };

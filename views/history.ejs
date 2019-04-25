@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">git 
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>History</title>
 </head>
 <body>
     <%- include('../parsials/navbarafter.ejs') %>
-    <h1>History</h1>
+    <h2>History of <%=oneUser.getFullName()%></h2>
+    <br>
+    <ul>
+        <li><a href='/statusreport/<%=oneUser.AWBs.id%>'><%=oneUser.AWBs.id%></a></li>
+    </ul>
+
+
+    
     
 </body>
 </html>
