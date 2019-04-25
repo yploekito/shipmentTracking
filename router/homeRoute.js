@@ -4,6 +4,8 @@ const User = Model.User
 const AWB = Model.AWB
 const Location = Model.Location
 const bcrypt = require('bcrypt')
+let timeFormat = require('../helpers/getTimeFormat') 
+
 
 router.get('/', (req, res) => {
     // console.log(req.query.errMsg)
@@ -80,7 +82,8 @@ router.get('/statusreport/:AWBId', (req, res) => {
             oneAWB:oneAWB,
             isLogin:isLogin,
             role:role,
-            userId:userId
+            userId:userId,
+            timeFormatFunction: timeFormat
         });
     })
     .catch((err)=>{
@@ -139,6 +142,45 @@ router.post('/login', (req,res)=>{
         console.log(err)
         res.send(err)
     })
+})
+
+router.post('/addLocation/:AWBId', (req, res)=>{
+    let currentLocation = req.body.currentLocation
+    let area = req.body.area
+    let date = req.body.date
+    let time = req.body.time
+    let fullDate = new Date(date + ' '+ time)
+    fullDate = fullDate.toLocaleString()
+
+    Location.create({
+        currentLocation: currentLocation,
+        area: area, 
+        AWBId: req.params.AWBId,
+        createdAt: fullDate
+    })
+    .then(()=>{
+        return AWB.findOne({
+            where:{
+                id:req.params.AWBId
+            }
+        })
+    })
+    .then((oneAWB)=>{
+        if(oneAWB.finalLocation === currentLocation){
+            return oneAWB.update({
+                status:'complete'
+            })
+        }else{
+            return oneAWB
+        }
+    })
+    .then(()=>{
+        res.redirect(`/statusreport/${req.params.AWBId}`)
+    })
+    .catch((err)=>{
+        res.send(err)
+    })
+    
 })
 
 module.exports = router;
