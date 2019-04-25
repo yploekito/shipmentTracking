@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING
   }, {});
   ShipmentType.associate = function(models) {
+    ShipmentType.hasMany(models.TypeProvider)
     // associations can be defined here
   };
   return ShipmentType;
