@@ -38,10 +38,11 @@ router.get('/services', (req, res) => {
     })
 })
 
-router.get('/services/delete/:servicesId', (req, res) => {
+router.get('/services/delete/:typeProviderId', (req, res) => {
+    let id = req.params.typeProviderId
     TypeProvider.findOne({
         where: {
-            id: servicesId
+            id: id
         },
         include: [
             {model: Provider},
@@ -59,7 +60,7 @@ router.post('/services/add', (req, res) => {
     let shipmentId = req.body.shipmentId;
     TypeProvider.create({
         ProviderId: providerId,
-        ShipmentId: shipmentId 
+        ShipmentTypeId: shipmentId 
     })
     .then( () => {
         res.redirect(`/services`)
