@@ -7,7 +7,11 @@
     <title>History</title>
 </head>
 <body>
-    <%- include('../parsials/navbarafter.ejs') %>
+        <% if(isLogin){ %>
+            <%- include('../parsials/navbarafter.ejs') %>
+        <% }else{ %>
+            <%- include('../parsials/navbarbefore.ejs') %>
+        <% } %>
     <h2>History of <%=oneUser.getFullName()%></h2>
     <br>
     <ul>

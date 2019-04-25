@@ -4,7 +4,16 @@ const User = Model.User
 const AWB = Model.AWB
 const Location = Model.Location
 router.get('/', (req, res) => {
-    res.render('../views/home.ejs');
+    // console.log(req.query.errMsg)
+    let isLogin = req.session.login
+    let role = req.session.role
+    let userId = req.session.userId
+    res.render('../views/home.ejs', {
+        error: req.query.errMsg,
+        isLogin:isLogin,
+        role:role,
+        userId:userId
+    });
 })
 
 router.get('/register', (req, res) => {
@@ -17,7 +26,13 @@ router.post('/register', (req, res) => {
     let userName = req.body.userName;
     let passWord = req.body.passWord;
     let role = "user";
-    User.create({firstName: firstName, lastName: lastName, userName: userName, passWord: passWord, role: role})
+    
+    User.create({firstName: firstName,
+         lastName: lastName, 
+         userName: userName, 
+         passWord: passWord, 
+         role: role
+    })
     .then( (user) => {
         console.log(user);
         res.redirect(`/history/${user.id}`)
@@ -27,7 +42,31 @@ router.post('/register', (req, res) => {
     })
 })
 
-router.post('/statusreport/:AWBId', (req,res)=>{
+router.post('/statusreport', (req,res)=>{
+    AWB.findOne({
+        where:{
+            id:req.body.AWB
+        }, include:{
+            model: Location
+        }
+    })
+    .then((oneAWB)=>{
+        if(oneAWB){
+            res.redirect(`/statusreport/${req.body.AWB}`)
+        }else{
+            res.redirect('/?errMsg=not found, input another AWB')
+        }
+    })
+    .catch((err)=>{
+        res.send(err)
+    })
+})
+
+router.get('/statusreport/:AWBId', (req, res) => {
+    let isLogin = req.session.login
+    let role = req.session.role
+    let userId = req.session.userId
+
     AWB.findOne({
         where:{
             id:req.params.AWBId
@@ -36,19 +75,22 @@ router.post('/statusreport/:AWBId', (req,res)=>{
         }
     })
     .then((oneAWB)=>{
-        console.log(oneAWB)
-        res.redirect(`/statusreport/${req.params.AWBId}`)
+        res.render('../views/statusReport.ejs', {
+            oneAWB:oneAWB,
+            isLogin:isLogin,
+            role:role,
+            userId:userId
+        });
     })
     .catch((err)=>{
         res.send(err)
     })
 })
 
-router.get('/statusreport/:AWBId', (req, res) => {
-    res.render('../views/statusReport.ejs');
-})
-
 router.get('/history/:userId', (req, res) => {
+    let isLogin = req.session.login
+    let role = req.session.role
+    let userId = req.session.userId
     User.findOne({
         where: {
             id: req.params.userId
@@ -59,7 +101,10 @@ router.get('/history/:userId', (req, res) => {
     })
     .then( (oneUser) => {
         res.render('../views/history.ejs', {
-            oneUser: oneUser
+            oneUser: oneUser,
+            isLogin:isLogin, 
+            role:role,
+            userId: userId
         });
         // res.send(oneUser);
     })
@@ -78,12 +123,18 @@ router.post('/login', (req,res)=>{
     User.findOne({where:{userName:inputUsername, passWord:inputPassword}})
     .then((oneUser)=>{
         if(oneUser){
+            let sess= req.session
+            req.session.login = true
+            req.session.role = oneUser.role
+            req.session.userId = oneUser.id
+            console.log(sess)
             res.redirect(`/history/${oneUser.id}`)
         }else{
             res.redirect('/login?errMsg= Username or Password is incorrect')
         }
     })
     .catch((err)=>{
+        console.log(err)
         res.send(err)
     })
 })
