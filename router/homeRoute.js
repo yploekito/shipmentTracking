@@ -49,7 +49,10 @@ router.get('/services/delete/:typeProviderId', (req, res) => {
             {model: ShipmentType}
         ]
     }).then( (oneTypeProvider) => {
-        return oneTypeProvider.destroy();
+        oneTypeProvider.destroy()
+    })
+    .then( ()=> {
+        res.redirect('/services')
     }).catch( (err) => {
         res.send(err)
     })
