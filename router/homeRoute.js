@@ -30,8 +30,16 @@ router.get('/statusreport', (req, res) => {
     res.render('../views/statusReport.ejs');
 })
 
-router.get('/history', (req, res) => {
-    res.render('../views/history.ejs');
+router.get('/history/:userId', (req, res) => {
+    User.findOne({where: {id: req.params.userId}})
+    .then( (oneUser) => {
+        res.render('../views/history.ejs', {
+            oneUser: oneUser
+        });
+    })
+    .catch( (err) => {
+        res.send(err);
+    })
 })
 
 router.get('/login', (req, res) => {
