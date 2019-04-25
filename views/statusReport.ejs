@@ -7,10 +7,41 @@
     <title>Status Report</title>
 </head>
 <body>
-    <%- include('../parsials/navbarafter.ejs') %>
+    <% if(isLogin){ %>
+        <%- include('../parsials/navbarafter.ejs') %>
+    <% }else{ %>
+        <%- include('../parsials/navbarafter.ejs') %>
+    <% } %>
     <h1>Status Report</h1>
     <div>
-        
+        <% console.log(oneAWB) %>
+        <% for (let i = 0; i < oneAWB.Locations.length; i++){ %>
+            <div>
+                <%= oneAWB.Locations[i].area %>
+                <br>
+                <%= oneAWB.Locations[i].currentLocation %>
+                <br>
+                <%= JSON.stringify(oneAWB.Locations[i].createdAt).slice(1,11) %>
+                <%= JSON.stringify(oneAWB.Locations[i].createdAt).slice(12,17) %>
+            </div>
+        <% } %>
     </div>
+    <% if (role === 'admin'){ %>
+
+        <h2>Update Location</h2>
+        <form action='/addLocation' method='POST'>
+            <label for='currentLocation'>Current Location: </label><br>
+            <input type='text' name='currentLocation' required> <br><br>
+            <label for='area'>Area :  </label><br>
+            <input type='text' name='area'> <br><br>
+            <label for="date">Date :</label><br>
+            <% var utc = new Date().toJSON().slice(0,10).replace(/-/g,'-') %>
+            <input type="date" name="date" value="<%= utc %>"" ><br><br>
+            <label for="time">Time : </label><br>
+            <input type="time"> <br>
+            <button type='submit'>Register</button>
+        </form>
+    <% } %>
+        
 </body>
 </html>
