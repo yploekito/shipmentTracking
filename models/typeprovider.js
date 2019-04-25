@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   TypeProvider.associate = function(models) {
     TypeProvider.hasMany(models.AWB)
     TypeProvider.belongsTo(models.Provider)
-    TypeProivder.belongsTo(models.ShipmentType)
+    TypeProvider.belongsTo(models.ShipmentType)
     // associations can be defined here
   };
   return TypeProvider;
