@@ -3,6 +3,8 @@ const Model = require('../models');
 const User = Model.User
 const AWB = Model.AWB
 const Location = Model.Location
+const bcrypt = require('bcrypt')
+
 router.get('/', (req, res) => {
     res.render('../views/home.ejs');
 })
@@ -12,14 +14,13 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/register', (req, res) => {
-    let firstName = req.body.title;
-    let lastName = req.body.description;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
     let userName = req.body.userName;
     let passWord = req.body.passWord;
     let role = "user";
     User.create({firstName: firstName, lastName: lastName, userName: userName, passWord: passWord, role: role})
     .then( (user) => {
-        console.log(user);
         res.redirect(`/history/${user.id}`)
     })
     .catch( (err) => {
@@ -75,9 +76,10 @@ router.get('/login', (req, res) => {
 router.post('/login', (req,res)=>{
     let inputUsername = req.body.username
     let inputPassword = req.body.password
-    User.findOne({where:{userName:inputUsername, passWord:inputPassword}})
+    User.findOne({where:{userName:inputUsername}})
     .then((oneUser)=>{
-        if(oneUser){
+        let check = bcrypt.compareSync(inputPassword, oneUser.passWord);
+        if(check){
             res.redirect(`/history/${oneUser.id}`)
         }else{
             res.redirect('/login?errMsg= Username or Password is incorrect')
