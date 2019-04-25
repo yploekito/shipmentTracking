@@ -7,8 +7,15 @@ module.exports = (sequelize, DataTypes) => {
     passWord: DataTypes.STRING,
     role: DataTypes.STRING
   }, {});
+
   User.associate = function(models) {
     // associations can be defined here
+    User.hasMany(models.AWB)
   };
+
+  User.prototype.getFullName = function() {
+    return `${this.firstName} ${this.lastName}`
+  }
+
   return User;
 };

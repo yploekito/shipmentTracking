@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     AWB.hasMany(models.Location)
     AWB.belongsTo(models.TypeProvider)
     // associations can be defined here
+    AWB.belongsTo(models.User)
   };
   return AWB;
 };

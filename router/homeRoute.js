@@ -38,16 +38,25 @@ router.post('/statusreport/:AWBId', (req,res)=>{
         console.log(oneAWB)
     })
 })
-router.get('/statusreport', (req, res) => {
+
+router.get('/statusreport/:AWBId', (req, res) => {
     res.render('../views/statusReport.ejs');
 })
 
 router.get('/history/:userId', (req, res) => {
-    User.findOne({where: {id: req.params.userId}})
+    User.findOne({
+        where: {
+            id: req.params.userId
+        },
+        include: [
+            {model: AWB}
+        ]
+    })
     .then( (oneUser) => {
         res.render('../views/history.ejs', {
             oneUser: oneUser
         });
+        // res.send(oneUser);
     })
     .catch( (err) => {
         res.send(err);
