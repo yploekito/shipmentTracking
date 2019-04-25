@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h2>List of Services</h2>
+    </div>
+    <br>
+    <table>
+        <tbody>
+            <tr>
+                <th>ID</th>
+                <th>Provider Name</th>
+                <th>Shipment Type</th>
+                <th>Option</th>
+            </tr>
+            <% for (let i=0; i<shipment.length; i++) { %>
+                <tr>
+                    <td><%= shipment[i].id%></td>
+                    <td><%= shipment[i].Provider.name%></td>
+                    <td><%= shipment[i].ShipmentType.name%></td>
+                    <td><a href="/services/delete/<%=shipment[i].dataValues.id%>">Delete</a></td>
+                </tr>    
+            <% } %>
+        </tbody>
+      </table><br><br>
+    <div>
+        <form action='/services/add' method='POST'>
+            <label for='providerId'>Kode Provider: </label><br>
+            <input type='text' name='providerId' required> <br><br>
+            <label for='shipmentId'>Kode Layanan: </label><br>
+            <input type='text' name='shipmentId' required> <br><br>
+            <button type='submit'>Add</button>
+        </form>
+    </div>
+    
+</body>
+</html>

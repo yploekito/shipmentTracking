@@ -3,6 +3,9 @@ const Model = require('../models');
 const User = Model.User
 const AWB = Model.AWB
 const Location = Model.Location
+const Provider = Model.Provider
+const TypeProvider = Model.TypeProvider
+const ShipmentType = Model.ShipmentType
 const bcrypt = require('bcrypt')
 
 router.get('/', (req, res) => {
@@ -16,6 +19,55 @@ router.get('/', (req, res) => {
         role:role,
         userId:userId
     });
+})
+
+router.get('/services', (req, res) => {
+    TypeProvider.findAll({
+        include: [
+            {model: Provider},
+            {model: ShipmentType}
+        ]
+    }).then( (allTypeProvider) => {
+        res.render('../views/services.ejs', {
+            error: req.query.errMsg, 
+            shipment: allTypeProvider
+        })
+        // res.send(allTypeProvider)
+    }).catch( (err) => {
+        res.send(err)
+    })
+})
+
+router.get('/services/delete/:servicesId', (req, res) => {
+    TypeProvider.findOne({
+        where: {
+            id: servicesId
+        },
+        include: [
+            {model: Provider},
+            {model: ShipmentType}
+        ]
+    }).then( (oneTypeProvider) => {
+        return oneTypeProvider.destroy();
+    }).catch( (err) => {
+        res.send(err)
+    })
+})
+
+router.post('/services/add', (req, res) => {
+    let providerId = req.body.providerId;
+    let shipmentId = req.body.shipmentId;
+    TypeProvider.create({
+        ProviderId: providerId,
+        ShipmentId: shipmentId 
+    })
+    .then( () => {
+        res.redirect(`/services`)
+    })
+    .catch( (err) => {
+        res.send(err)
+    })
+    
 })
 
 router.get('/register', (req, res) => {
@@ -139,6 +191,7 @@ router.post('/login', (req,res)=>{
         console.log(err)
         res.send(err)
     })
+
 })
 
 module.exports = router;
