@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING
   }, {});
   Provider.associate = function(models) {
+    Provider.hasMany(models.TypeProvider)
     // associations can be defined here
   };
   return Provider;

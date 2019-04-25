@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>History</title>
+</head>
+<body>
+        <% if(isLogin){ %>
+            <%- include('../parsials/navbarafter.ejs') %>
+        <% }else{ %>
+            <%- include('../parsials/navbarbefore.ejs') %>
+        <% } %>
+    <h2>History of <%=oneUser.getFullName()%></h2>
+    <br>
+    <ul>
+        <%for (var i=0; i<oneUser.AWBs.length; i++)  { %>
+            <li><a href='/statusreport/<%=oneUser.AWBs[i].id%>'><%=oneUser.AWBs[i].id%></a></li>
+        <% } %>
+    </ul>
+</body>
+</html>
