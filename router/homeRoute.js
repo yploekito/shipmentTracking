@@ -26,8 +26,20 @@ router.post('/register', (req, res) => {
     })
 })
 
+router.post('/statusreport/:AWBId', (req,res)=>{
+    AWB.findOne({
+        where:{
+            id:req.params.AWBId
+        }, includes:{
+            model: Location
+        }
+    })
+    .then((oneAWB)=>{
+        console.log(oneAWB)
+    })
+})
 
-router.get('/statusreport/:awbId', (req, res) => {
+router.get('/statusreport/:AWBId', (req, res) => {
     res.render('../views/statusReport.ejs');
 })
 
@@ -61,9 +73,7 @@ router.post('/login', (req,res)=>{
     User.findOne({where:{userName:inputUsername, passWord:inputPassword}})
     .then((oneUser)=>{
         if(oneUser){
-            res.redirect(`/history/${oneUser.id}`, {
-                oneUser: oneUser
-            })
+            res.redirect(`/history/${oneUser.id}`)
         }else{
             res.redirect('/login?errMsg= Username or Password is incorrect')
         }

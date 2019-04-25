@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     AWBId: DataTypes.INTEGER
   }, {});
   Location.associate = function(models) {
+    Location.belongsTo(models.AWB)
     // associations can be defined here
   };
   return Location;

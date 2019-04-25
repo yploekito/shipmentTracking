@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     finalLocationArea: DataTypes.STRING
   }, {});
   AWB.associate = function(models) {
+    AWB.hasMany(models.Location)
+    AWB.belongsTo(models.TypeProvider)
     // associations can be defined here
     AWB.belongsTo(models.User)
   };
