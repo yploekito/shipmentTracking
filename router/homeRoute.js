@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Model = require('../models');
 const User = Model.User
+const AWB = Model.AWB
 router.get('/', (req, res) => {
     res.render('../views/home.ejs');
 })
@@ -25,7 +26,18 @@ router.post('/register', (req, res) => {
     })
 })
 
-
+router.post('/statusreport/:AWBId', (req,res)=>{
+    AWB.findOne({
+        where:{
+            id:req.params.AWBId
+        }, includes:{
+            model: Location
+        }
+    })
+    .then((oneAWB)=>{
+        console.log(oneAWB)
+    })
+})
 router.get('/statusreport', (req, res) => {
     res.render('../views/statusReport.ejs');
 })
