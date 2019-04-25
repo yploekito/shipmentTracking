@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +11,9 @@
     <% if(isLogin){ %>
         <%- include('../parsials/navbarafter.ejs') %>
     <% }else{ %>
-        <%- include('../parsials/navbarafter.ejs') %>
+        <%- include('../parsials/navbarbefore.ejs') %>
     <% } %>
+    
     <h1>Status Report</h1>
     <div>
         <% console.log(oneAWB) %>
@@ -26,10 +28,9 @@
             </div>
         <% } %>
     </div>
-    <% if (role === 'admin'){ %>
-
+    <% if (role === 'admin' && oneAWB.status !== 'complete'){ %>
         <h2>Update Location</h2>
-        <form action='/addLocation' method='POST'>
+        <form action='/addLocation/<%= oneAWB.id %>' method='POST'>
             <label for='currentLocation'>Current Location: </label><br>
             <input type='text' name='currentLocation' required> <br><br>
             <label for='area'>Area :  </label><br>
@@ -38,9 +39,15 @@
             <% var utc = new Date().toJSON().slice(0,10).replace(/-/g,'-') %>
             <input type="date" name="date" value="<%= utc %>"" ><br><br>
             <label for="time">Time : </label><br>
-            <input type="time"> <br>
-            <button type='submit'>Register</button>
+            <% let time = timeFormatFunction(new Date()) %>
+            <% let fullDate = utc + ' ' + time %>
+            <% console.log(fullDate) %>
+            <input type="time" name="time" value='<%= time %>'> <br>
+            <button type='submit'>Update Location</button>
+            <% console.log( new Date(fullDate)) %>
         </form>
+    <% }else if(oneAWB.status === 'complete'){ %>
+        <h2>Shipment has been completed!</h2>
     <% } %>
         
 </body>
