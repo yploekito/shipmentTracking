@@ -35,11 +35,7 @@ router.get('/history', (req, res) => {
 })
 
 router.get('/login', (req, res) => {
-    res.render('../views/login.ejs');
-})
-
-router.post('/cancel', (req, res) => {
-    res.redirect('/');
+    res.render('../views/login.ejs', {error: req.query.errMsg});
 })
 
 router.post('/login', (req,res)=>{
@@ -49,9 +45,12 @@ router.post('/login', (req,res)=>{
     .then((oneUser)=>{
         if(oneUser){
             res.redirect(`/history/${oneUser.id}`)
-        } else {
+        }else{
             res.redirect('/login?errMsg= Username or Password is incorrect')
         }
+    })
+    .catch((err)=>{
+        res.send(err)
     })
 })
 
