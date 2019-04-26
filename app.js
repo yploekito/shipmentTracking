@@ -5,7 +5,7 @@ const homeRoute = require('./router/homeRoute')
 
 const session = require('express-session')
 const sequelize = require('sequelize');
-
+app.use(express.static(__dirname+'/res'))
 app.use(express.urlencoded({extended:false}))
 let sess = {secret:'daringfox'}
 app.use(session(sess))

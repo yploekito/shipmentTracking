@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -8,25 +10,31 @@
 </head>
 
 <body>
+        <%- include('../parsials/header.ejs') %>
+
     <%- include('../parsials/navbarbefore.ejs') %>
     <div>
-        <h2>Register here</h2>
         <br>
     </div>
     
-    <div>
-        <form action='/register' method='POST'>
-            <label for='firstName'>First Name: </label><br>
-            <input type='text' name='firstName' required> <br><br>
-            <label for='lastName'>Last Name: </label><br>
-            <input type='text' name='lastName'> <br><br>
-            <label for='userName'>User Name: </label><br>
-            <input type='text' name='userName' required> <br><br>
-            <label for='passWord'>Password: </label><br>
-            <input type='password' name='passWord' required><br><br>
-            <button type='submit'>Register</button>
-        </form>
+    <div style='width: 100%; text-align: center'>
+        <div style='width: 300px; margin: 0 auto 0 auto; padding:20px; ;'>
+            <form action='/register' method='POST'>
+                <label for='firstName' style='display: inline-block; margin:0 auto 0 auto'>First Name: </label>
+                <input type='text' name='firstName' style ='width:200px' required><br> 
+                <label for='lastName' style='display: inline-block; margin:0 auto 0 auto'>Last Name: </label>
+                <input type='text' name='lastName' style ='width:200px'  > <br>
+                <label for='userName' style='display: inline-block; margin:0 auto 0 auto'>User Name: </label>
+                <input type='text' name='userName' style ='width:200px'  required> <br>
+                <label for='passWord' style='display: inline-block; margin:0 auto 0 auto'>Password: </label>
+                <input type='password' name='passWord' style ='width:200px' required><br><br>
+                <button type='submit'>Register</button>
+            </form>
+        </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     
 </body>
 </html>

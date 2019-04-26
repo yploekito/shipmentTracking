@@ -7,6 +7,7 @@ const Provider = Model.Provider
 const TypeProvider = Model.TypeProvider
 const ShipmentType = Model.ShipmentType
 const bcrypt = require('bcrypt')
+const checkLoginFunction = require('../helpers/checkLogin')
 let timeFormat = require('../helpers/getTimeFormat') 
 
 
@@ -15,6 +16,10 @@ router.get('/', (req, res) => {
     let isLogin = req.session.login
     let role = req.session.role
     let userId = req.session.userId
+    console.log(req.query.logout)
+    if(req.query.logout === 'true'){
+        req.session.destroy()
+    }
     res.render('../views/home.ejs', {
         error: req.query.errMsg,
         isLogin:isLogin,
@@ -23,7 +28,10 @@ router.get('/', (req, res) => {
     });
 })
 
-router.get('/services', (req, res) => {
+router.get('/services', checkLoginFunction, (req, res) => {
+    let isLogin = req.session.login
+    let role = req.session.role
+    let userId = req.session.userId
     TypeProvider.findAll({
         include: [
             {model: Provider},
@@ -32,7 +40,10 @@ router.get('/services', (req, res) => {
     }).then( (allTypeProvider) => {
         res.render('../views/services.ejs', {
             error: req.query.errMsg, 
-            shipment: allTypeProvider
+            shipment: allTypeProvider,
+            isLogin:isLogin,
+            role:role,
+            userId:userId
         })
         // res.send(allTypeProvider)
     }).catch( (err) => {
@@ -40,7 +51,8 @@ router.get('/services', (req, res) => {
     })
 })
 
-router.get('/services/delete/:typeProviderId', (req, res) => {
+router.get('/services/delete/:typeProviderId', checkLoginFunction, (req, res) => {
+
     let id = req.params.typeProviderId
     TypeProvider.findOne({
         where: {
@@ -147,7 +159,7 @@ router.get('/statusreport/:AWBId', (req, res) => {
     })
 })
 
-router.get('/history/:userId', (req, res) => {
+router.get('/history/:userId',checkLoginFunction, (req, res) => {
     let isLogin = req.session.login
     let role = req.session.role
     let userId = req.session.userId
